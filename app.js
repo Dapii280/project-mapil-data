@@ -25,7 +25,7 @@ async function fetchItems() {
     itemsList.innerHTML = data.map(item => `
       <div class="item-card">
         <div>
-          <strong>${item.title}</strong>
+          <strong>${item.title}</strong> <small style="color: #0070f3; font-weight: bold;">[${item.category || 'Umum'}]</small>
           <p style="margin: 4px 0 0; color: #555;">${item.description}</p>
         </div>
         <button class="btn-delete" onclick="deleteItem(${item.id})">Hapus</button>
@@ -41,9 +41,10 @@ async function fetchItems() {
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   const title = document.getElementById('title').value;
+  const category = document.getElementById('category').value;
   const description = document.getElementById('description').value;
 
-  const { error } = await supabaseClient.from('items').insert([{ title, description }]);
+  const { error } = await supabaseClient.from('items').insert([{ title, category, description }]);
   
   if (error) {
     alert('Gagal menambah data: ' + error.message);
